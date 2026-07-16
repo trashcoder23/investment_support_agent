@@ -1,0 +1,28 @@
+timestamp,budget,sector,horizon,companies,predicted_returns,confidences
+2026-07-16T01:00:25.832107,100000.0,IT,60,TCS|Infosys|HCLTech|Wipro,-9.65|-4.48|-2.52|-3.53,Low|Low|Low|Low
+2026-07-16T01:03:24.337979,100000.0,IT,30,TCS|Infosys|HCLTech|Wipro,3.87|7.94|4.98|11.85,Medium|Medium|Medium|Medium
+2026-07-16T01:03:28.116441,100000.0,IT,60,TCS|Infosys|HCLTech|Wipro,-9.65|-4.48|-2.52|-3.53,Low|Low|Low|Low
+2026-07-16T01:38:41.742491,100000.0,IT,60,TCS|Infosys|HCLTech|Wipro,-9.65|-4.48|-2.52|-3.53,Low|Low|Low|Low
+2026-07-16T02:26:32.949428,100000.0,IT,30,TCS|Infosys|HCLTech|Wipro,3.87|7.94|4.98|11.85,Medium|Medium|Medium|Medium
+2026-07-16T02:26:38.280157,100000.0,IT,60,TCS|Infosys|HCLTech|Wipro,-9.65|-4.48|-2.52|-3.53,Low|Low|Low|Low
+2026-07-16T02:45:50.923599,100000.0,IT,60,TCS|Infosys|HCLTech|Wipro,-9.65|-4.48|-2.52|-3.53,Low|Low|Low|Low
+2026-07-16T10:31:52.143169,100000.0,IT,30,TCS|Infosys|HCLTech|Wipro,3.87|7.94|4.98|11.85,Medium|Medium|Medium|Medium
+2026-07-16T11:38:24.597866,150000.0,IT,30,TCS|Infosys|HCLTech|Wipro,3.87|7.94|4.98|11.85,Medium|Medium|Medium|Medium
+2026-07-16T11:53:42.643564,100000.0,Pharma,30,Sun Pharma|Cipla|Divi's Labs|Dr. Reddy's,-0.89|0.99|-1.93|1.46,Medium|Medium|Medium|Medium
+2026-07-16T12:20:09.581040,50000.0,Pharma,30,Sun Pharma|Cipla|Divi's Labs|Dr. Reddy's,-0.89|0.99|-1.93|1.46,Medium|Medium|Medium|Medium
+2026-07-16T13:38:37.508119,50000.0,Automobile,60,Hero MotoCorp|Maruti Suzuki|Mahindra & Mahindra|Bajaj Auto,1.34|3.72|3.0|4.98,High|High|High|High
+2026-07-16T13:39:15.387513,50000.0,Automobile,90,Hero MotoCorp|Maruti Suzuki|Mahindra & Mahindra|Bajaj Auto,-10.49|-9.73|-9.79|-4.76,High|High|High|High
+2026-07-16T13:39:22.673034,50000.0,Automobile,60,Hero MotoCorp|Maruti Suzuki|Mahindra & Mahindra|Bajaj Auto,1.34|3.72|3.0|4.98,High|High|High|High
+2026-07-16T13:39:26.621304,50000.0,Automobile,90,Hero MotoCorp|Maruti Suzuki|Mahindra & Mahindra|Bajaj Auto,-10.49|-9.73|-9.79|-4.76,High|High|High|High
+2026-07-16T14:00:09.594687,50000.0,IT,30,TCS|Infosys|HCLTech|Wipro,3.87|7.94|4.98|11.85,Medium|Medium|Medium|Medium
+2026-07-16T14:07:44.726232,50000.0,IT,30,TCS|Infosys|HCLTech|Wipro,2.74|8.14|4.93|11.12,Medium|Medium|Medium|Medium
+2026-07-16T14:09:23.339785,50000.0,IT,60,TCS|Infosys|HCLTech|Wipro,-7.04|-2.42|1.0|-3.38,Low|Low|Low|Low
+2026-07-16T14:15:04.185692,150000.0,IT,30,TCS|Infosys|HCLTech|Wipro,2.74|8.14|4.93|11.12,Medium|Medium|Medium|Medium
+2026-07-16T14:15:19.372440,150000.0,IT,60,TCS|Infosys|HCLTech|Wipro,-7.04|-2.42|1.0|-3.38,Low|Low|Low|Low
+2026-07-16T14:17:49.876147,150000.0,IT,60,TCS|Infosys|HCLTech|Wipro,-2.64|-0.43|-0.32|-0.42,Low|Low|Low|Low
+2026-07-16T16:03:05.794665,150000.0,IT,30,TCS|Infosys|HCLTech|Wipro,7.5|9.99|9.58|11.06,Low|Low|Low|Low
+2026-07-16T16:03:13.108447,150000.0,IT,60,TCS|Infosys|HCLTech|Wipro,-2.64|-0.43|-0.32|-0.42,Low|Low|Low|Low
+2026-07-16T16:03:16.777841,150000.0,IT,90,TCS|Infosys|HCLTech|Wipro,-20.22|-18.54|-20.01|-17.81,Medium|Medium|Medium|Medium
+2026-07-16T16:12:29.182362,150000.0,IT,30,TCS|Infosys|HCLTech|Wipro,-17.11|-16.24|-15.28|9.47,Low|Low|Low|Low
+2026-07-16T16:13:21.081319,150000.0,Pharma,30,Sun Pharma|Cipla|Divi's Labs|Dr. Reddy's,-4.35|-4.99|-2.15|2.71,Low|Low|Low|Low
+2026-07-16T16:17:06.475449,150000.0,Banking,30,HDFC Bank|ICICI Bank|SBI|Axis Bank,4.6|-3.34|-1.39|-3.31,Low|Low|Low|Low
