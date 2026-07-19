@@ -11,19 +11,20 @@ import os
 import logging
 from datetime import datetime, timedelta
 
+import json
 import pandas as pd
 import yfinance as yf
+import ta
 
 # Ensure utils is importable when running from project root
 import sys
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
+from utils.cache_service import cache_manager
 
 from utils.config import (
     SECTOR_TICKERS,
     TICKER_FILE_STEMS,
-    RAW_DIR,
-    TRAIN_START_DATE,
-    TRAIN_END_DATE,
+    RAW_DIR
 )
 
 logger = logging.getLogger(__name__)
@@ -34,7 +35,7 @@ def _ensure_dir(path: str) -> None:
     os.makedirs(path, exist_ok=True)
 
 
-def download_raw_data(start: str = TRAIN_START_DATE, end: str = TRAIN_END_DATE) -> dict:
+def download_raw_data(start: str = "2025-10-01", end: str = "2026-03-31") -> dict:
     """
     Download historical OHLCV data for every ticker and save to raw CSVs.
 
@@ -131,6 +132,79 @@ def fetch_recent_data(ticker: str, lookback_days: int = 120) -> pd.DataFrame:
     return df
 
 
+from services.technical_indicator_service import add_technical_indicators
+
+def get_financial_metrics(ticker: str) -> dict:
+    """
+    Fetch structured financial metrics for the LLM to use.
+    Includes current price, volume, market cap, P/E ratio, and recent return,
+    as well as technical indicators (RSI, MACD, MA, Volatility, etc.).
+    Returns a dictionary.
+    """
+    cache_key = f"yahoo_{ticker}"
+    cached = cache_manager.get(cache_key)
+    if cached:
+        return cached
+
+    try:
+        stock = yf.Ticker(ticker)
+        info = stock.info
+        
+        # Current Price
+        current_price = info.get("currentPrice", info.get("regularMarketPrice"))
+        
+        # Market Cap
+        market_cap = info.get("marketCap")
+        
+        # Volume
+        volume = info.get("volume")
+        
+        # Financial Ratios
+        pe_ratio = info.get("trailingPE")
+        forward_pe = info.get("forwardPE")
+        
+        # Technical indicators (using 6 months of history)
+        hist = stock.history(period="6mo")
+        technicals = {}
+        
+        if not hist.empty and len(hist) > 30:
+            hist = add_technical_indicators(hist)
+            latest = hist.iloc[-1]
+            
+            technicals = {
+                "Daily_Return_Pct": round(latest.get("Daily_Return", 0), 2),
+                "Monthly_Return_Pct": round(latest.get("Monthly_Return", 0), 2),
+                "MA5": round(latest.get("MA5", 0), 2),
+                "MA10": round(latest.get("MA10", 0), 2),
+                "MA20": round(latest.get("MA20", 0), 2),
+                "MA50": round(latest.get("MA50", 0), 2),
+                "EMA": round(latest.get("EMA", 0), 2),
+                "RSI": round(latest.get("RSI", 0), 2),
+                "MACD": round(latest.get("MACD", 0), 2),
+                "BB_High": round(latest.get("BB_High", 0), 2),
+                "BB_Low": round(latest.get("BB_Low", 0), 2),
+                "BB_Mid": round(latest.get("BB_Mid", 0), 2),
+                "Rolling_Volatility_Pct": round(latest.get("Rolling_Volatility", 0), 2),
+                "Avg_Daily_Range": round(latest.get("Avg_Daily_Range", 0), 2),
+                "ATR": round(latest.get("ATR", 0), 2),
+                "Momentum": round(latest.get("Momentum", 0), 2)
+            }
+            
+        metrics = {
+            "Ticker": ticker,
+            "Current_Price_INR": current_price if current_price else None,
+            "Volume": volume if volume else None,
+            "Market_Cap_INR": market_cap if market_cap else None,
+            "Trailing_PE": round(pe_ratio, 2) if pe_ratio else None,
+            "Forward_PE": round(forward_pe, 2) if forward_pe else None,
+            "Technical_Indicators": technicals
+        }
+        
+        cache_manager.set(cache_key, metrics)
+        return metrics
+    except Exception as exc:
+        logger.error(f"Failed to fetch metrics for {ticker}: {exc}")
+        return {"error": f"Error fetching financial metrics for {ticker}: {exc}"}
 def fetch_actual_returns(ticker: str, start_date: str, end_date: str) -> pd.DataFrame:
     """
     Download actual closing prices for a ticker between two dates.

@@ -97,72 +97,11 @@ TICKER_FILE_STEMS: dict[str, str] = {
 }
 
 # ---------------------------------------------------------------------------
-# Training data window
+# RAG / Vectorstore Paths
 # ---------------------------------------------------------------------------
-TRAIN_START_DATE = "2025-10-01"
-TRAIN_END_DATE   = "2026-03-31"
+VECTORSTORE_DIR  = os.path.join(BASE_DIR, "vectorstore", "faiss_index")
+NEWS_CACHE_DIR   = os.path.join(DATA_DIR, "news_cache")
 
-# Simulated "today" for validation.
-# Model was trained up to Mar 31 → we simulate making predictions on Apr 1
-# and validate against actual Apr/May/Jun/Jul 2026 data (all available now).
-VALIDATION_SIMULATION_DATE = "2026-04-01"
+os.makedirs(VECTORSTORE_DIR, exist_ok=True)
+os.makedirs(NEWS_CACHE_DIR, exist_ok=True)
 
-
-# ---------------------------------------------------------------------------
-# Prediction horizons (days)
-# ---------------------------------------------------------------------------
-HORIZONS = [30, 60, 90]
-
-# ---------------------------------------------------------------------------
-# Feature column names
-# ---------------------------------------------------------------------------
-RAW_FEATURES = ["Open", "High", "Low", "Close", "Volume"]
-
-ENGINEERED_FEATURES = [
-    "Daily_Return",
-    "Weekly_Return",
-    "Monthly_Return",
-    "MA5",
-    "MA10",
-    "MA20",
-    "EMA",
-    "RSI",
-    "MACD",
-    "BB_High",
-    "BB_Low",
-    "BB_Mid",
-    "Rolling_Volatility",
-    "Avg_Daily_Range",
-]
-
-ALL_FEATURES = RAW_FEATURES + ENGINEERED_FEATURES
-
-# Target column template — formatted with horizon int
-TARGET_TEMPLATE = "Return_{horizon}d"
-
-# ---------------------------------------------------------------------------
-# Train / validation split ratio
-# ---------------------------------------------------------------------------
-TRAIN_RATIO = 0.80
-
-# ---------------------------------------------------------------------------
-# Confidence thresholds (based on R²)
-# ---------------------------------------------------------------------------
-CONFIDENCE_HIGH   = 0.70
-CONFIDENCE_MEDIUM = 0.40
-# Below CONFIDENCE_MEDIUM → Low
-
-# ---------------------------------------------------------------------------
-# Model names (for logging / metadata)
-# ---------------------------------------------------------------------------
-MODEL_NAMES = ["LinearRegression", "RandomForest", "XGBoost"]
-
-# ---------------------------------------------------------------------------
-# Sector → model file stem mapping
-# ---------------------------------------------------------------------------
-SECTOR_MODEL_STEM: dict[str, str] = {
-    "IT":         "it",
-    "Banking":    "banking",
-    "Pharma":     "pharma",
-    "Automobile": "automobile",
-}
