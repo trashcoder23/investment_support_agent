@@ -9,8 +9,10 @@ sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", ".."))
 
 from backtesting.historical_runner import run_ablation_study
 from backtesting.historical_report import evaluate_recommendation
+from ui.theme import apply_theme
 
-st.set_page_config(page_title="Historical Analyst", page_icon="⏳", layout="wide")
+st.set_page_config(page_title="Historical Analyst", layout="wide")
+apply_theme()
 
 st.info(f"""
 ### Historical Evaluation
@@ -24,13 +26,33 @@ st.info(f"""
 st.title("⏳ Time-Aware Historical AI Analyst")
 st.markdown("Evaluate the AI Agent as an analyst frozen in time. Does unstructured knowledge improve the decision?")
 
+NIFTY_STOCKS = {
+    "HDFC Bank": "HDFCBANK.NS",
+    "TCS": "TCS.NS",
+    "Infosys": "INFY.NS",
+    "Dr. Reddy's": "DRREDDY.NS",
+    "Reliance Industries": "RELIANCE.NS",
+    "ICICI Bank": "ICICIBANK.NS",
+    "State Bank of India (SBI)": "SBIN.NS",
+    "Bharti Airtel": "BHARTIARTL.NS",
+    "ITC Limited": "ITC.NS",
+    "Larsen & Toubro": "LT.NS",
+    "Hindustan Unilever": "HINDUNILVR.NS",
+    "Axis Bank": "AXISBANK.NS",
+    "Bajaj Finance": "BAJFINANCE.NS",
+    "Maruti Suzuki": "MARUTI.NS",
+    "Sun Pharma": "SUNPHARMA.NS",
+    "Kotak Mahindra Bank": "KOTAKBANK.NS"
+}
+
 col1, col2, col3 = st.columns(3)
 with col1:
-    ticker = st.text_input("Ticker", value="HDFCBANK.NS")
+    company_name = st.selectbox("Company", list(NIFTY_STOCKS.keys()), index=0)
+    ticker = NIFTY_STOCKS[company_name]
 with col2:
     cutoff_date = st.date_input("Evaluation Date (Cutoff)", value=pd.to_datetime("2026-03-31"))
 with col3:
-    horizon = st.selectbox("Prediction Horizon", ["1 Month", "3 Months", "6 Months"], index=1)
+    horizon = st.selectbox("Prediction Horizon", ["1 Month", "2 Months", "3 Months"], index=1)
 
 start_date = cutoff_date - relativedelta(months=6)
 months_to_add = int(horizon.split()[0])
@@ -40,7 +62,7 @@ st.caption(f"**Training Window:** {start_date.strftime('%d %b %Y')} → {cutoff_
 
 if st.button("Run Historical Backtest", type="primary"):
     with st.spinner(f"Simulating Analyst at {cutoff_date}..."):
-        query = f"Analyze {ticker} and recommend a portfolio allocation."
+        query = f"Analyze {company_name} (Ticker: {ticker}) and recommend a portfolio allocation."
         
         try:
             results = run_ablation_study(query, str(start_date), str(cutoff_date))
@@ -87,14 +109,14 @@ if st.button("Run Historical Backtest", type="primary"):
             delta_data = {
                 "Metric": ["Recommendation", "Bullishness", "Confidence"],
                 "Structured Only": [
-                    version_a.get("overall_outlook", "N/A"),
-                    version_a.get("bullishness_score", "N/A"),
-                    version_a.get("confidence", "N/A")
+                    str(version_a.get("overall_outlook", "N/A")),
+                    str(version_a.get("bullishness_score", "N/A")),
+                    str(version_a.get("confidence", "N/A"))
                 ],
                 "Structured + RAG": [
-                    version_b.get("overall_outlook", "N/A"),
-                    version_b.get("bullishness_score", "N/A"),
-                    version_b.get("confidence", "N/A")
+                    str(version_b.get("overall_outlook", "N/A")),
+                    str(version_b.get("bullishness_score", "N/A")),
+                    str(version_b.get("confidence", "N/A"))
                 ]
             }
             st.table(pd.DataFrame(delta_data).set_index("Metric"))
@@ -127,7 +149,7 @@ if st.button("Run Historical Backtest", type="primary"):
                 
             # --- ACTUAL PERFORMANCE ---
             st.markdown("---")
-            st.subheader(f"📈 Actual Validation Performance ({cutoff_date.strftime('%b %Y')} → {end_date.strftime('%b %Y')})")
+            st.subheader(f"Actual Validation Performance ({cutoff_date.strftime('%b %Y')} → {end_date.strftime('%b %Y')})")
             if "error" in eval_results:
                 st.error(eval_results["error"])
             else:

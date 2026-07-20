@@ -17,15 +17,16 @@ load_dotenv()
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
 
 from agent.agent import run_agent
+from ui.theme import apply_theme
 
 # ── Page config ───────────────────────────────────────────────────────────────
 st.set_page_config(
-    page_title="ISA v2 — Investment Support Agent",
-    page_icon="📈",
+    page_title="ISA — Investment Support Agent",
     layout="wide",
 )
+apply_theme()
 
-st.title("📈 ISA v2 — Investment Support Agent")
+st.title("ISA — Investment Support Agent")
 st.markdown(
     "Analyze companies or sectors using a production-grade, single-pass StateGraph Agent "
     "powered by Grok, Gemini, or OpenAI."

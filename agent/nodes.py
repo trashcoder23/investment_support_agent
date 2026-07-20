@@ -63,7 +63,7 @@ def intent_parsing_node(state: AgentState) -> Dict[str, Any]:
         try:
             budget_str = budget_match.group(1).replace(",", "")
             budget = float(budget_str)
-            print(f"[Intent Parsing] Extracted Budget: ₹{budget}")
+            print(f"[Intent Parsing] Extracted Budget: INR {budget}")
         except Exception as e:
             print(f"[Intent Parsing] Error parsing budget: {e}")
             
@@ -119,7 +119,7 @@ def structured_context_node(state: AgentState) -> Dict[str, Any]:
     ticker = intent.get("ticker")
     budget = intent.get("budget", 50000.0) or 50000.0  # Default budget fallback
     
-    print(f"[Structured Context] Target Ticker: {ticker}, Budget for allocation: ₹{budget}")
+    print(f"[Structured Context] Target Ticker: {ticker}, Budget for allocation: INR {budget}")
     
     logs = list(state.get("logs", []))
     telemetry = dict(state.get("telemetry", {}))
@@ -169,6 +169,7 @@ def rag_context_node(state: AgentState) -> Dict[str, Any]:
     start_time = time.time()
     intent = state.get("intent", {})
     company = intent.get("company", "Unknown")
+    ticker = intent.get("ticker")
     query = state.get("query", "")
     
     print(f"[RAG Context] Searching unstructured data for Company: '{company}' and Query: '{query}'")
@@ -188,7 +189,7 @@ def rag_context_node(state: AgentState) -> Dict[str, Any]:
         }
         
     print("[RAG Context] Executing similarity search in local FAISS vectorstore...")
-    unstructured_text = get_relevant_unstructured_data(company, query, top_k=5)
+    unstructured_text = get_relevant_unstructured_data(company, query, top_k=5, ticker=ticker)
     
     if isinstance(unstructured_text, list):
         print(f"[RAG Context] Retrieved {len(unstructured_text)} snippets.")

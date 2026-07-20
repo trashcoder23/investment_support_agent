@@ -55,7 +55,7 @@ def run_ablation_study(query: str, start_date: str, cutoff_date: str) -> Dict[st
                 mock_metrics.side_effect = lambda ticker: get_historical_financial_metrics(ticker, start_date, cutoff_date)
                 
                 # 2. Patch RAG to use historical filtering
-                mock_rag.side_effect = lambda comp, q, top_k=5: get_historical_relevant_unstructured_data(comp, q, cutoff_date, top_k)
+                mock_rag.side_effect = lambda comp, q, top_k=5, ticker=None: get_historical_relevant_unstructured_data(comp, q, cutoff_date, top_k, ticker)
                 
                 print(f"\n[Historical Runner] Executing Version B (Structured + RAG) for cutoff {cutoff_date}")
                 state_b = run_agent(query)

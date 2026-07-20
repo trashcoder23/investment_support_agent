@@ -4,6 +4,7 @@ from langchain_core.language_models.chat_models import BaseChatModel
 from llm.grok_provider import GrokProvider
 from llm.gemini_provider import GeminiProvider
 from llm.openai_provider import OpenAIProvider
+from llm.mistral_provider import MistralProvider
 
 logger = logging.getLogger(__name__)
 
@@ -24,12 +25,11 @@ def get_llm_model() -> BaseChatModel:
         elif provider == "gemini":
             logger.info("Initializing Gemini provider...")
             return GeminiProvider().get_llm()
+        elif provider == "mistral":
+            logger.info("Initializing Mistral provider...")
+            return MistralProvider().get_llm()
         else:
             raise ValueError(f"Unknown LLM_PROVIDER: {provider}")
     except Exception as e:
-        logger.warning(f"Failed to initialize LLM provider '{provider}': {e}. Falling back to Gemini...")
-        try:
-            return GeminiProvider().get_llm()
-        except Exception as fallback_err:
-            logger.error(f"Fallback to Gemini failed: {fallback_err}")
-            raise fallback_err
+        logger.error(f"Failed to initialize LLM provider '{provider}': {e}.")
+        raise e

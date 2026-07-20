@@ -5,8 +5,10 @@ import streamlit as st
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", ".."))
 
 from backtesting.historical_report import generate_performance_metrics
+from ui.theme import apply_theme
 
-st.set_page_config(page_title="Performance Dashboard", page_icon="📊", layout="wide")
+st.set_page_config(page_title="Performance Dashboard", layout="wide")
+apply_theme()
 st.title("📊 Performance Dashboard")
 
 st.markdown("""

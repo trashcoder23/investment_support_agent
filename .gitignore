@@ -35,5 +35,9 @@ share/python-wheels/
 ._*
 .Spotlight-V100
 .Trashes
-ehthumbs.db
+Thmb.db
 Thumbs.db
+
+# Data and Cache
+data/cache/
+vectorstore/
